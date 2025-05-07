@@ -1,0 +1,31 @@
+/*
+ * MeidoFX CSS Stylesheet
+ * Place this file in resources/styles/meidofx.css
+ */
+
+/* --- General Styles --- */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: transparent;
+}
+
+/* --- Title Bar Styles --- */
+.title-bar {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* --- Resize Styles --- */
+.resize-icon {
+    -fx-background-color: transparent;
+}
+
+.resize-icon-svg {
+    -fx-fill: #B0BEC5;
+}
+
+.resize-icon:hover .resize-icon-svg {
+    -fx-fill: #607D8B;
+}
