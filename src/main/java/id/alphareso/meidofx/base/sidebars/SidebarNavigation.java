@@ -116,7 +116,12 @@ public class SidebarNavigation extends StackPane {
         menuContainer.getChildren().add(menuItem);
 
         // Set up selection handling
-        menuItem.setOnMouseClicked(event -> selectMenuItem(menuItem));
+        menuItem.setOnMouseClicked(event -> {
+            selectMenuItem(menuItem);
+            if (menuItem.onAction != null && !menuItem.hasSubItems()) {
+                menuItem.onAction.accept(menuItem);
+            }
+        });
 
         return this;
     }
@@ -239,13 +244,12 @@ public class SidebarNavigation extends StackPane {
             subItemContainer.setVisible(false);
             subItemContainer.setManaged(false);
 
-            // Add event handler for selection
+            // Jangan tangani klik di sini — serahkan ke SidebarNavigation untuk mengatur selected item
+            // Tapi boleh tetap handle toggle submenu di sini
             this.setOnMouseClicked(event -> {
                 if (hasSubItems) {
                     toggleExpanded();
-                    event.consume();
-                } else if (onAction != null) {
-                    onAction.accept(this);
+                    event.consume(); // hanya konsumsi jika ini toggle, biarkan bubbling kalau bukan
                 }
             });
         }
@@ -281,17 +285,22 @@ public class SidebarNavigation extends StackPane {
         public void addSubItem(SidebarMenuItem subItem) {
             subItems.add(subItem);
             subItemContainer.getChildren().add(subItem);
-            hasSubItems = true; // Set hasSubItems to true when adding the first subitem
+            hasSubItems = true;
 
-            if (this.getChildren().size() == 2) { // Ensure arrow is added only once
-                // Add expand/collapse indicator
+            if (this.getChildren().size() == 2) {
                 SVGPath arrow = new SVGPath();
                 arrow.setContent("M0,0 L8,8 L0,16 Z");
                 arrow.getStyleClass().add("sidebar-menu-arrow");
                 this.getChildren().add(arrow);
             }
 
-            // No need to replace the item, just make subItemContainer visible/managed
+            // ⬇️ Tambahkan subItemContainer ke parent layout jika belum ada
+            if (this.getParent() instanceof VBox parent) {
+                int index = parent.getChildren().indexOf(this);
+                if (!parent.getChildren().contains(subItemContainer)) {
+                    parent.getChildren().add(index + 1, subItemContainer);
+                }
+            }
         }
 
         private void initSubItemContainer() {

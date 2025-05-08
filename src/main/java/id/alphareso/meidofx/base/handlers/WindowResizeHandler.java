@@ -5,8 +5,11 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
@@ -30,37 +33,36 @@ public class WindowResizeHandler {
         this.stage = stage;
 
         // Create the resize handle with SVG path
+        Region resizeIcon = new Region();
         SVGPath svgPath = new SVGPath();
         svgPath.setContent("M542.72 884.053333l341.333333-341.333333a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-341.333333 341.333333a32 32 0 0 1-47.466667-42.837333l2.197334-2.432 341.333333-341.333333-341.333333 341.333333z m-437.333333-10.666666l778.666666-778.666667a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-778.666666 778.666667a32 32 0 0 1-47.466667-42.837334l2.197333-2.432 778.666667-778.666666-778.666667 778.666666z");
         svgPath.setStyle("-fx-fill: #9E9E9E;");
+        resizeIcon.setShape(svgPath);
 
-        Group iconGroup = new Group(svgPath);
-        iconGroup.setScaleX(0.015); // Kecilkan
-        iconGroup.setScaleY(0.015);
+        resizeIcon.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
+        resizeIcon.setMaxSize(16.0, 16.00);
+        resizeIcon.setPrefSize(16.0, 16.0);
 
         // Create a container for the resize handle
-        StackPane resizeIcon = new StackPane(iconGroup);
-        resizeIcon.setPrefSize(10, 10);
-        resizeIcon.setMaxSize(5, 5);
-        resizeIcon.setMinSize(10, 10);
-        resizeIcon.setCursor(Cursor.SE_RESIZE);
-        resizeIcon.setStyle("-fx-background-color: green;");
+        StackPane resizePane = new StackPane(resizeIcon);
+        resizePane.setMaxSize(16, 16);
+        resizePane.setCursor(Cursor.SE_RESIZE);
 
         // Position the resize handle in the bottom-right corner
-        resizeIcon.setTranslateX(5);
-        resizeIcon.setTranslateY(5);
+        resizePane.setTranslateX(-3);
+        resizePane.setTranslateY(-3);
 
         // Add resize functionality
-        resizeIcon.setOnMousePressed(this::handleMousePressed);
-        resizeIcon.setOnMouseDragged(this::handleMouseDragged);
+        resizePane.setOnMousePressed(this::handleMousePressed);
+        resizePane.setOnMouseDragged(this::handleMouseDragged);
 
-        this.resizeHandle = resizeIcon;
+        this.resizeHandle = resizePane;
 
         // Add the resize handle to the container
-        container.getChildren().add(resizeIcon);
+        container.getChildren().add(resizePane);
 
-        // Position it at the bottom-right corner
-        StackPane.setAlignment(resizeIcon, javafx.geometry.Pos.BOTTOM_RIGHT);
+        // Position it at the bottom right
+        StackPane.setAlignment(resizePane, javafx.geometry.Pos.BOTTOM_RIGHT);
     }
 
     /**
