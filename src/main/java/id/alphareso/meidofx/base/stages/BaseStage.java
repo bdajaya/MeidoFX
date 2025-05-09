@@ -14,6 +14,7 @@ import javafx.stage.Stage;
  * Base stage class for all application windows, providing common functionality.
  */
 public class BaseStage extends Stage {
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.rgb(240, 240, 240);
 
     protected final StackPane root;
     protected final Scene scene;
@@ -40,7 +41,7 @@ public class BaseStage extends Stage {
         // Initialize the root container
         root = new StackPane();
         root.setBackground(new Background(new BackgroundFill(
-                Color.rgb(240, 240, 240),
+                DEFAULT_BACKGROUND_COLOR,
                 CornerRadii.EMPTY,
                 Insets.EMPTY
         )));
@@ -54,7 +55,7 @@ public class BaseStage extends Stage {
         this.setMinHeight(minHeight);
 
         // Add CSS stylesheets if needed
-        // scene.getStylesheets().add(getClass().getResource("/styles/base-stage.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("styles/base-stage.css").toExternalForm());
     }
 
     /**
@@ -85,8 +86,7 @@ public class BaseStage extends Stage {
      * @param content The content node
      */
     public void setContent(Region content) {
-        root.getChildren().clear();
-        root.getChildren().add(content);
+        root.getChildren().setAll(content);
     }
 }
 

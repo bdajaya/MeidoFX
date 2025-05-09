@@ -1,15 +1,21 @@
 package id.alphareso.meidofx.base.handlers;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
  * Handler for window dragging functionality, enables moving the window by dragging the title bar.
  */
-public class WindowDragHandler {
+public class WindowDragHandler extends HBox {
     private double xOffset = 0;
     private double yOffset = 0;
+
     private final Stage stage;
+    private static final double DEFAULT_SPACING = 5;
+    private static final double DEFAULT_PADDING = 5;
 
     /**
      * Creates a new WindowDragHandler for the specified stage.
@@ -18,6 +24,9 @@ public class WindowDragHandler {
      */
     public WindowDragHandler(Stage stage) {
         this.stage = stage;
+        this.setSpacing(DEFAULT_SPACING);
+        this.setPadding(new Insets(DEFAULT_PADDING));
+        this.setAlignment(Pos.CENTER);
     }
 
     /**

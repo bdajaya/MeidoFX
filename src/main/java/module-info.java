@@ -1,5 +1,6 @@
 module MeidoFX {
     requires javafx.controls;
+    requires java.logging;
 
     opens id.alphareso.meidofx;
 

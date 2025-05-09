@@ -9,8 +9,12 @@ import javafx.stage.StageStyle; /**
  * A specialized stage with rounded corners, supporting title bar, sidebar, and content area.
  */
 public class RoundStage extends BaseStage {
+    private static final double DEFAULT_CORNER_RADIUS = 10;
+    private static final Color DEFAULT_CONTENT_AREA_BACKGROUND = Color.GREY;
+    private static final Color DEFAULT_NAVIGATION_AREA_BACKGROUND = Color.LIGHTSKYBLUE;
 
     private final StackPane contentArea;
+    private final StackPane navigationArea;
     private final BorderPane layout;
     private WindowResizeHandler resizeHandler;
     private final double cornerRadius;
@@ -19,7 +23,7 @@ public class RoundStage extends BaseStage {
      * Creates a new round stage with default corner radius (20px).
      */
     public RoundStage() {
-        this(300, 200, 20);
+        this(300, 200, DEFAULT_CORNER_RADIUS);
     }
 
     /**
@@ -42,17 +46,34 @@ public class RoundStage extends BaseStage {
         // Content area (center)
         contentArea = new StackPane();
         contentArea.setBackground(new Background(new BackgroundFill(
-                Color.WHITE,
+                DEFAULT_CONTENT_AREA_BACKGROUND,
                 CornerRadii.EMPTY,
                 Insets.EMPTY
         )));
         layout.setCenter(contentArea);
+
+        // Navigation area (left)
+        navigationArea = new StackPane();
+        navigationArea.setBackground(new Background(new BackgroundFill(
+                DEFAULT_NAVIGATION_AREA_BACKGROUND,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+        )));
+        layout.setLeft(navigationArea);
 
         // Apply rounded corners to the root
         root.setBackground(new Background(new BackgroundFill(
                 Color.rgb(240, 240, 240),
                 new CornerRadii(cornerRadius),
                 Insets.EMPTY
+        )));
+
+        // Tambahkan border hitam tipis pada root
+        root.setBorder(new Border(new BorderStroke(
+                Color.BLACK,
+                BorderStrokeStyle.SOLID,
+                new CornerRadii(cornerRadius), // Mengikuti cornerRadius root
+                new BorderWidths(1)
         )));
 
         // Add layout to root
@@ -74,10 +95,6 @@ public class RoundStage extends BaseStage {
      */
     public void setTitleBar(Region titleBar) {
         layout.setTop(titleBar);
-
-        // Enable window dragging on the title bar
-        WindowDragHandler dragHandler = new WindowDragHandler(this);
-        dragHandler.enableDrag(titleBar);
     }
 
     /**
@@ -90,13 +107,21 @@ public class RoundStage extends BaseStage {
     }
 
     /**
+     * Sets the navigation area component.
+     *
+     * @param navigation The navigation area node
+     */
+    public void setNavigationArea(Region navigation) {
+        navigationArea.getChildren().setAll(navigation);
+    }
+
+    /**
      * Sets the content in the main content area.
      *
      * @param content The content node
      */
     public void setContent(Region content) {
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(content);
+        contentArea.getChildren().setAll(content);
     }
 
     /**
@@ -160,5 +185,21 @@ public class RoundStage extends BaseStage {
      */
     public WindowResizeHandler getResizeHandler() {
         return resizeHandler;
+    }
+
+    /**
+     * Adds specific content to the navigation area.
+     *
+     * @param sideMenu The content node to be added to the navigation area
+     */
+    public void addNavigationContent(VBox sideMenu) {
+        navigationArea.getChildren().add(sideMenu);
+    }
+
+    /**
+     * Clears all content from the navigation area.
+     */
+    public void clearNavigationContent() {
+        navigationArea.getChildren().clear();
     }
 }

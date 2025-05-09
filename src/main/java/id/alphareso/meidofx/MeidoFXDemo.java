@@ -1,9 +1,6 @@
 package id.alphareso.meidofx;
 
 import id.alphareso.meidofx.base.enums.TitleBarStyle;
-import id.alphareso.meidofx.base.sidebars.SidebarMenuFactory;
-import id.alphareso.meidofx.base.sidebars.SidebarMenuConfig;
-import id.alphareso.meidofx.base.sidebars.SidebarNavigation;
 import id.alphareso.meidofx.base.stages.RoundStage;
 import id.alphareso.meidofx.base.titles.TitleBar;
 import id.alphareso.meidofx.ui.pages.HelpView;
@@ -27,40 +24,62 @@ public class MeidoFXDemo extends Application {
         stage.setTitle("MeidoFX Demo Application");
 
         TitleBar titleBar = new TitleBar(stage, TitleBarStyle.ALL);
-        titleBar.setBackgroundStyle("-fx-background-color: #3498db;");
+        //titleBar.setBackgroundCss("-fx-background-color: #3498db;");
         titleBar.getTitleLabel().setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+
         // Show icon in title bar
         Image appIcon = new Image(FileResource.load("/images/icon.png"));
         stage.getIcons().add(appIcon);
         titleBar.setIcon(appIcon);
         stage.setTitleBar(titleBar);
 
-        SidebarNavigation sidebar = new SidebarNavigation(200)
-                .setBackgroundStyle("-fx-background-color: #f0f0f0;")
-                .addSection("Navigation")
-                .addMenuItem(SidebarMenuConfig.DASHBOARD.buildStandalone(item -> setContent("Dashboard Content")))
-                .addMenuItem(SidebarMenuConfig.USERS.buildStandalone(item -> setContent("Users Content")))
-                .addSection("Settings")
-                .addMenuItem(
-                        SidebarMenuConfig.SETTINGS.buildRoot()
-                                .withSubItem(SidebarMenuFactory.subMenu("general", "General", item -> setContent("General Settings")))
-                                .withSubItem(SidebarMenuFactory.subMenu("security", "Security", item -> setContent("Security Settings")))
-                )
-                .addMenuItem(
-                        SidebarMenuConfig.HELP.buildStandalone(item -> {
-                            RoundStage dialog = new RoundStage(400, 300, 20);
-                            dialog.setTitle("Help & Support");
-                            dialog.setContent(new HelpView());
-                            dialog.initOwner(stage);
-                            dialog.show();
-                        })
-                );
+        // Membuat area navigasi dengan tombol navigasi
+        VBox navigationMenu = new VBox();
+        navigationMenu.setPadding(new Insets(10));
+        navigationMenu.setSpacing(10);
+        navigationMenu.setStyle("-fx-background-color: #f0f0f0;");
 
-        stage.setSidebar(sidebar);
+        // Tombol navigasi dengan aksi untuk mengganti konten utama
+        Button dashboardButton = new Button("Dashboard");
+        dashboardButton.setOnAction(event -> setContent("Dashboard Content"));
 
+        Button settingsButton = new Button("Settings");
+        settingsButton.setOnAction(event -> setContent("Settings Content"));
+
+        Button helpButton = new Button("Help");
+        helpButton.setOnAction(event -> {
+            RoundStage dialog = new RoundStage(400, 300, 20);
+            dialog.setTitle("Help");
+
+            TitleBar dialogTitleBar = new TitleBar(dialog, TitleBarStyle.NO_LEFT);
+            dialogTitleBar.setBackgroundCss("-fx-background-color: #e74c3c;");
+            dialogTitleBar.getTitleLabel().setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+            dialog.setTitleBar(dialogTitleBar);
+
+            StackPane dialogContent = new StackPane();
+            dialogContent.setPadding(new Insets(20));
+
+            Label dialogLabel = new Label("This is a dialog window created with RoundStage.");
+            dialogLabel.setWrapText(true);
+
+            dialogContent.getChildren().add(dialogLabel);
+            dialog.setContent(dialogContent);
+
+            dialog.initOwner(stage);
+            dialog.show();
+        });
+
+        // Menambahkan semua tombol ke dalam menu navigasi
+        navigationMenu.getChildren().addAll(dashboardButton, settingsButton, helpButton);
+
+        // Menambahkan menu navigasi ke navigationArea di RoundStage
+        stage.addNavigationContent(navigationMenu);
+
+        // Menambahkan konten awal ke area konten utama
         setContent("Welcome to MeidoFX Demo!");
+
+        // Menampilkan stage
         stage.show();
-        sidebar.selectMenuItemById("dashboard");
     }
 
     private void setContent(String contentText) {
@@ -81,10 +100,10 @@ public class MeidoFXDemo extends Application {
         Button testButton = new Button("Test Button");
         testButton.setOnAction(event -> {
             RoundStage dialog = new RoundStage(400, 300, 20);
-            dialog.setTitle("Test Dialog");
+            dialog.setTitle("Test Dialog Content");
 
             TitleBar dialogTitleBar = new TitleBar(dialog, TitleBarStyle.ALL);
-            dialogTitleBar.setBackgroundStyle("-fx-background-color: #e74c3c;");
+            dialogTitleBar.setBackgroundCss("-fx-background-color: #e74c3c;");
             dialogTitleBar.getTitleLabel().setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
             dialog.setTitleBar(dialogTitleBar);
 

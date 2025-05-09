@@ -1,6 +1,7 @@
 package id.alphareso.meidofx.base.controls;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,13 @@ import java.util.Objects;
  * that can be used independently throughout the application.
  */
 public class WindowControlButtons extends HBox {
+    private static final String MINIMIZE_ICON_PATH = "images/minimize-light.png"; // Path harus konsisten
+    private static final String MAXIMIZE_ICON_PATH = "images/maximize-light.png";
+    private static final String CLOSE_ICON_PATH = "images/close-light.png";
+    private static final double ICON_WIDTH = 16;
+    private static final double ICON_HEIGHT = 16;
+    private static final double DEFAULT_SPACING = 5;
+    private static final double DEFAULT_PADDING = 5;
 
     private final Button minimizeButton;
     private final Button maximizeButton;
@@ -27,13 +35,14 @@ public class WindowControlButtons extends HBox {
      */
     public WindowControlButtons(Stage stage) {
         this.stage = stage;
-        this.setSpacing(5);
-        this.setPadding(new Insets(5));
+        this.setSpacing(DEFAULT_SPACING);
+        this.setPadding(new Insets(DEFAULT_PADDING));
+        this.setAlignment(Pos.CENTER_RIGHT);
 
         // Initialize buttons
-        minimizeButton = createButton("images/minimize-light.png", 16, 16);
-        maximizeButton = createButton("images/maximize-light.png", 16, 16);
-        closeButton = createButton("images/close-light.png", 16, 16);
+        minimizeButton = createButton(MINIMIZE_ICON_PATH, ICON_WIDTH, ICON_HEIGHT);
+        maximizeButton = createButton(MAXIMIZE_ICON_PATH, ICON_WIDTH, ICON_HEIGHT);
+        closeButton = createButton(CLOSE_ICON_PATH, ICON_WIDTH, ICON_HEIGHT);
 
         // Set button actions
         setupButtonActions();

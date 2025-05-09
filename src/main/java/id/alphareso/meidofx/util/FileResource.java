@@ -6,15 +6,19 @@ import java.net.URL;
 public class FileResource {
     private FileResource() {}
 
-    private static URL loadURL(String path) {
-        return FileResource.class.getResource(path);
+    // Contoh: Selalu asumsikan path dari root classpath
+    private static URL loadURLInternal(String path) {
+        String adjustedPath = path.startsWith("/") ? path : "/" + path;
+        return FileResource.class.getResource(adjustedPath);
     }
 
-    public static String load (String path) {
-        return loadURL(path).toString();
+    public static String load(String path) {
+        URL resourceUrl = loadURLInternal(path);
+        return (resourceUrl != null) ? resourceUrl.toString() : null; // Handle null
     }
 
     public static InputStream loadStream(String name) {
-        return FileResource.class.getResourceAsStream(name);
+        String adjustedName = name.startsWith("/") ? name : "/" + name;
+        return FileResource.class.getResourceAsStream(adjustedName);
     }
 }

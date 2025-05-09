@@ -17,6 +17,8 @@ import javafx.stage.Stage;
  * Handler for window resizing functionality, enables resizing the window from the bottom-right corner.
  */
 public class WindowResizeHandler {
+    private static final String RESIZE_ICON_SVG_PATH = "M542.72 884.053333l341.333333-341.333333a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-341.333333 341.333333a32 32 0 0 1-47.466667-42.837333l2.197334-2.432 341.333333-341.333333-341.333333 341.333333z m-437.333333-10.666666l778.666666-778.666667a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-778.666666 778.666667a32 32 0 0 1-47.466667-42.837334l2.197333-2.432 778.666667-778.666666-778.666667 778.666666z";
+
     private double xOffset = 0;
     private double yOffset = 0;
     private final Stage stage;
@@ -35,12 +37,11 @@ public class WindowResizeHandler {
         // Create the resize handle with SVG path
         Region resizeIcon = new Region();
         SVGPath svgPath = new SVGPath();
-        svgPath.setContent("M542.72 884.053333l341.333333-341.333333a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-341.333333 341.333333a32 32 0 0 1-47.466667-42.837333l2.197334-2.432 341.333333-341.333333-341.333333 341.333333z m-437.333333-10.666666l778.666666-778.666667a32 32 0 0 1 47.445334 42.816l-2.197334 2.432-778.666666 778.666667a32 32 0 0 1-47.466667-42.837334l2.197333-2.432 778.666667-778.666666-778.666667 778.666666z");
+        svgPath.setContent(RESIZE_ICON_SVG_PATH);
         svgPath.setStyle("-fx-fill: #9E9E9E;");
         resizeIcon.setShape(svgPath);
-
         resizeIcon.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
-        resizeIcon.setMaxSize(16.0, 16.00);
+        resizeIcon.setMaxSize(16.0, 16.0);
         resizeIcon.setPrefSize(16.0, 16.0);
 
         // Create a container for the resize handle
